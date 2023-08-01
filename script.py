@@ -17,7 +17,8 @@ if os.path.exists(nome_arquivo_csv):
     os.remove(nome_arquivo_csv)
 def document_initialised(driver):
     return driver.execute_script("return initialised")
-
+op = input('1 - TODOS OS CLIENTES\n2 - SOMENTE KUBERNETS\n3 - SOMENTE TOMCAT\n')
+print(op)
 driver_path =  'C:\\Users\\autbank\\Downloads\\chromedriver.exe'
 
 service = Service(executable_path=driver_path)
@@ -60,7 +61,7 @@ driver.switch_to.frame(frame)
 
 select_element = driver.find_element(By.ID,'page:frmra_consra_analista_r:codigosistema')
 select = Select(select_element)
-select.select_by_value('CC')
+select.select_by_value('PM')
 
 select_element2 = driver.find_element(By.ID,'page:frmra_consra_analista_r:situacaora')
 select2 = Select(select_element2)
@@ -73,7 +74,7 @@ button2 = driver.find_element(By.NAME,'page:frmra_consra_analista_r:_id79')
 button2.click()
 
 time.sleep(10)
-headers = ['CLIENTE','RA','AMBIENTE','RESPONSAVEL','DATA ABERTURA','SITUAÇÃO']
+headers = ['CLIENTE','RA','AMBIENTE','RESPONSAVEL','DESCRIÇÃO','DATA ABERTURA','SITUAÇÃO','OBSERVAÇÕES']
 table_csv = []
 
 qntd = driver.find_element(By.CLASS_NAME,'pagerDeluxe_text')
@@ -97,15 +98,28 @@ for i in range(int(qntd.text.split(" ")[3])):
     line_table_csv = []
 
     for j,valores in enumerate(valores_da_tabela):
-        print(valores_da_tabela[j][0])
-        print(valores_da_tabela[j][1])
-        print(valores_da_tabela[j][3])
-        print(valores_da_tabela[j][4])
-        print(valores_da_tabela[j][6])
-        print(valores_da_tabela[j][8])
-        print("-"*100)
-        c = [valores_da_tabela[j][0],valores_da_tabela[j][1],valores_da_tabela[j][3],valores_da_tabela[j][4],valores_da_tabela[j][6],valores_da_tabela[j][8]]
-        table_csv.append(c)
+        if op == '1':
+            print(valores_da_tabela[j][0])
+            print(valores_da_tabela[j][1])
+            print(valores_da_tabela[j][3])
+            print(valores_da_tabela[j][4])
+            print(valores_da_tabela[j][6])
+            print(valores_da_tabela[j][8])
+            print("-"*100)
+            c = [valores_da_tabela[j][0],valores_da_tabela[j][1],valores_da_tabela[j][3],valores_da_tabela[j][4],'',valores_da_tabela[j][6],valores_da_tabela[j][8], '']
+            table_csv.append(c)
+        if op == '2':
+            if 'CREDIBRF' in valores_da_tabela[j][0] or 'DAYCOVAL' in valores_da_tabela[j][0]or 'EWALLY' in valores_da_tabela[j][0] or 'INTER' in valores_da_tabela[j][0] or 'PAGUEVELOZ' in valores_da_tabela[j][0] or 'PAN' in valores_da_tabela[j][0] or 'PROTEGE' in valores_da_tabela[j][0] or 'RENDIMENTO' in valores_da_tabela[j][0] or 'RODOBENS' in valores_da_tabela[j][0] or 'SEMEAR' in valores_da_tabela[j][0] or 'SOCIAL BANK' in valores_da_tabela[j][0]:
+                print("CAIU NA OPCAO 2")
+                print("-"*100)
+                c = [valores_da_tabela[j][0],valores_da_tabela[j][1],valores_da_tabela[j][3],valores_da_tabela[j][4],'',valores_da_tabela[j][6],valores_da_tabela[j][8], '']
+                table_csv.append(c)
+        if op == '3':
+            if 'ARBI' in valores_da_tabela[j][0] or 'CARUANA' in valores_da_tabela[j][0]or 'CHINA' in valores_da_tabela[j][0] or 'FIBRA' in valores_da_tabela[j][0] or 'INDUSTRIAL' in valores_da_tabela[j][0] or 'LUSO' in valores_da_tabela[j][0] or 'MASTER' in valores_da_tabela[j][0] or 'MODAL' in valores_da_tabela[j][0] or 'ORIGINAL' in valores_da_tabela[j][0] or 'PARANÁ' in valores_da_tabela[j][0] or 'PINE' in valores_da_tabela[j][0] or 'SOFISA' in valores_da_tabela[j][0] or 'VR' in valores_da_tabela[j][0]:
+                print("CAIU NA OPCAO 3")
+                print("-"*100)
+                c = [valores_da_tabela[j][0],valores_da_tabela[j][1],valores_da_tabela[j][3],valores_da_tabela[j][4],'',valores_da_tabela[j][6],valores_da_tabela[j][8], '']
+                table_csv.append(c)
     button3 = driver.find_element(By.ID,'page:frmra_consra_analista_r:ssBTORAGrid0:ssBTORAGrid0_scroll_3next')
     button3.click()
     
